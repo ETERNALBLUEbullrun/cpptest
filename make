@@ -2,13 +2,15 @@ NAME="main"
 INPUTS="$NAME.cpp"
 OUTBIN="$NAME.o"
 
+[ -n "$IGNOREWARN" ] || IGNOREWARN=0
 set -x #echo sh execution
-CXXFLAGS+="-Wall -Werror"
+[ "$IGNOREWARN" -gt 0 ] || CXXFLAGS+="-Wall -Werror"
 CPPFLAGS+="-o $OUTBIN -lsqlite3"
 test -f "$OUTBIN" && mv "$OUTBIN" "$OUTBIN.bak"
 ctags -R
 if hash clang++ 2>/dev/null; then
-	if (clang-check -analyze $INPUTS -- $CXXFLAGS -Wno-extra-tokens); then
+	if [ "$IGNOREWARN" -gt 0 ] ||\
+			(clang-check -analyze $INPUTS -- $CXXFLAGS -Wno-extra-tokens); then
 		clang++ $INPUTS $CXXFLAGS $CPPFLAGS
 	fi
 else
