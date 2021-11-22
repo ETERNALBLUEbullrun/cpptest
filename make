@@ -3,16 +3,16 @@ INPUTS="$NAME.cpp"
 OUTBIN="$NAME.o"
 
 set -x #echo sh execution
-WARN="-Wall -Werror"
-FLAGS="-o $OUTBIN -lsqlite3 $WARN"
+CXXFLAGS+="-Wall -Werror"
+CPPFLAGS+="-o $OUTBIN -lsqlite3"
 test -f "$OUTBIN" && mv "$OUTBIN" "$OUTBIN.bak"
 ctags -R
 if hash clang++ 2>/dev/null; then
-	if clang-check -analyze $INPUTS -- $WARN -Wno-extra-tokens; then
-		clang++ $INPUTS $FLAGS
+	if (clang-check -analyze $INPUTS -- $CXXFLAGS -Wno-extra-tokens); then
+		clang++ $INPUTS $CXXFLAGS $CPPFLAGS
 	fi
 else
-	g++ $INPUTS $FLAGS
+	g++ $INPUTS $CXXFLAGS $CPPFLAGS
 fi
 if test -f "$OUTBIN"; then
 	chmod u+x "$OUTBIN"
