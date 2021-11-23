@@ -1,5 +1,5 @@
 NAME="main"
-INPUTS="$NAME.cpp db.cpp"
+INPUTS="$NAME.cpp db.cpp xarg_parser.cpp"
 OUTBIN="$NAME.o"
 
 [ -n "$IGNOREWARN" ] || IGNOREWARN=0
