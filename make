@@ -1,5 +1,5 @@
 NAME="main"
-INPUTS="$NAME.cpp"
+INPUTS="$NAME.cpp db.cpp"
 OUTBIN="$NAME.o"
 
 [ -n "$IGNOREWARN" ] || IGNOREWARN=0
